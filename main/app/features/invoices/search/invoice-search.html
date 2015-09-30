@@ -1,0 +1,131 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <input it-input="" name="itesoftid" class="form-control floating-label mg-top-10" type="text"
+                       it-text="{{'ITESOFTID_SEARCH_CRITERIA' | translate}}" ng-model="search.itesoftid" autofocus>
+            </div>
+            <div class="form-group">
+                <input it-input="" name="batchname" class="form-control floating-label" type="text"
+                       it-text="{{'BATCH_NAME_SEARCH_CRITERIA' | translate}}" ng-model="search.batchname">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <input it-input=""
+                       it-text="{{'INVOICE_NUMBER_SEARCH_CRITERIA' | translate}}"
+                       name="invoicenumber" class="form-control floating-label mg-top-10" type="text"
+                       ng-model="search.invoicenumber">
+            </div>
+            <div class="form-group">
+                <input it-input=""
+                       it-text="{{'CATEGORY_SEARCH_CRITERIA' | translate}}"
+                       name="category" class="form-control floating-label" type="text"
+                       ng-model="search.category">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <input it-input=""
+                       it-text="{{'STATE_SEARCH_CRITERIA' | translate}}"
+                       name="state" class="form-control floating-label mg-top-10" type="text"
+                       ng-model="search.state">
+            </div>
+            <div class="form-group">
+                <input it-input=""
+                       it-text="{{'BUSINESS_GROUP_SEARCH_CRITERIA' | translate}}"
+                       name="businnessGroup" class="form-control floating-label " type="text"
+                       ng-model="search.businessgroup">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <input it-input=""
+                       it-text="{{'START_DATE_SEARCH_CRITERIA' | translate}}"
+                       name="startdate" class="form-control floating-label mg-top-10"
+                       type="text"
+                       pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))"
+                       ng-model="search.startDate">
+            </div>
+            <div class="form-group">
+                <input it-input=""
+                       it-text="{{'END_DATE_SEARCH_CRITERIA' | translate}}"
+                       name="enddate" class="form-control floating-label"
+                       type="text"
+                       pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))"
+                       ng-model="search.endDate">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="row">
+                <div class="btn-group">
+                    <button ng-disabled="disableActions" class="btn btn-primary" ng-click="search()">
+                        <span class="fa fa-search fa-lg"></span>
+                    </button>
+                    <button class="btn btn-primary  btn-danger" title="{{'CLEAR_CRITERIA' | translate}}"
+                            ng-click="clearCriteria()">
+                        <span class="fa fa-remove fa-lg"></span>
+                    </button>
+                </div>
+                <it-loader></it-loader>
+            </div>
+        </div>
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+    <div class="row" style="clear: both;">
+
+        <it-master-detail>
+            <it-master it-master-data="invoices"
+                       it-lang="'fr'"
+                       it-no-data-msg="{{'NO_DATA_AVAILABLE' | translate}}"
+                       it-master-detail-control="masterDetails"
+                       it-lock-on-change="true"
+                       it-no-detail-msg="{{getDetailMessage()}}">
+                <it-master-header it-search-placeholder="{{'SEARCH_PLACEHOLDER' | translate}}">
+                    <div class="btn-group">
+                        <button class="btn btn-primary  btn-success"
+                                title="{{'ADD_ITEM_BUTTON_TITLE' | translate}}"
+                                ng-disabled="currentItemWrapper.hasChanged"
+                                ng-click="addNewItem()">
+                            <span class="fa fa-plus fa-lg"></span>
+                        </button>
+                        <button class="btn btn-danger"
+                                title="{{'DELETE_ITEM_BUTTON_TITLE' | translate}}"
+                                ng-disabled="masterDetails.getSelectedItems().length == 0"
+                                ng-click="deleteSelectedItems()">
+                            <span class="fa fa-trash fa-lg"></span>
+                        </button>
+                    </div>
+                </it-master-header>
+            </it-master>
+            <it-detail>
+                <it-detail-header>
+                    <div>
+                        <button ng-disabled="!currentItemWrapper.hasChanged" class="btn btn-primary  btn-danger"
+                                itle="{{'UPDATE' | translate}}"
+                                ng-click="save()">
+                            <span class="fa fa-floppy-o fa-lg"></span>
+                        </button>
+                    </div>
+                    <button class="btn btn-success" title="{{'UNDO' | translate}}" ng-click="undoChange()">
+                        <span class="fa fa-undo fa-lg"></span>
+                    </button>
+                </it-detail-header>
+                <it-detail-content>
+                            <textarea ui-codemirror="editorOptions" name="invoicecontent"
+                                      class="it-fill form-control floating-label"
+                                      type="text"
+                                      placeholder="Insert content of invoice here..."
+                                      ng-model="currentItemWrapper.currentItem.xml"></textarea>
+
+
+                </it-detail-content>
+            </it-detail>
+        </it-master-detail>
+    </div>
+</div>

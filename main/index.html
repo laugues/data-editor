@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" ng-app="itesoft-ml-editor" ng-strict-di>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>Marklogic Editor</title>
+    <link rel="stylesheet" type="text/css" href="assets/lib/codemirror/lib/codemirror.css">
+
+    <!--CSS for codemirror-->
+    <link rel="stylesheet" type="text/css" href="assets/lib/codemirror/theme/material.css">
+    <!-- Code mirror search addon-->
+    <link rel="stylesheet" type="text/css" href="assets/lib/codemirror/addon/dialog/dialog.css">
+    <!-- Code mirror Full screen addon-->
+    <link rel="stylesheet" type="text/css" href="assets/lib/codemirror/addon/display/fullscreen.css">
+    <!-- Code mirror Fold  addon-->
+    <link rel="stylesheet" type="text/css" href="assets/lib/codemirror/addon/fold/foldgutter.css">
+
+
+    <link href="assets/lib/itesoft/fonts/main.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="assets/css/css.css">
+
+
+    <!--Itesoft Lib-->
+    <script src="assets/lib/itesoft/vendor.min.js"></script>
+    <script src="assets/lib/itesoft/lib.min.js"></script>
+
+
+    <!------------------------------->
+    <!-------  Code mirror ---------->
+    <!------------------------------->
+    <!-- Core of Code mirror  -->
+    <script src="assets/lib/angular-ui-codemirror/ui-codemirror.min.js"></script>
+    <script type="text/javascript" src="assets/lib/codemirror/lib/codemirror.js"></script>
+    <script type="text/javascript" src="assets/lib/codemirror/mode/xml/xml.js"></script>
+    <!-- Code mirro search addon-->
+    <script type="text/javascript" src="assets/lib/codemirror/addon/search/search.js"></script>
+    <script type="text/javascript" src="assets/lib/codemirror/addon/search/searchcursor.js"></script>
+    <script type="text/javascript" src="assets/lib/codemirror/addon/dialog/dialog.js"></script>
+    <!-- Code mirror Match tag addon-->
+    <script type="text/javascript" src="assets/lib/codemirror/addon/fold/xml-fold.js"></script>
+    <script type="text/javascript" src="assets/lib/codemirror/addon/edit/matchtags.js"></script>
+    <script type="text/javascript" src="assets/lib/codemirror/addon/search/match-highlighter.js"></script>
+    <!-- Code mirror Active ligne addon-->
+    <script type="text/javascript" src="assets/lib/codemirror/addon/selection/active-line.js"></script>
+    <!-- Code mirror Place holder addon-->
+    <script type="text/javascript" src="assets/lib/codemirror/addon/display/placeholder.js"></script>
+    <!-- Code mirror Full screen addon-->
+    <script type="text/javascript" src="assets/lib/codemirror/addon/display/fullscreen.js"></script>
+    <!--Code mirror-->
+    <script type="text/javascript" src="assets/lib/codemirror/addon/fold/foldcode.js"></script>
+    <script type="text/javascript" src="assets/lib/codemirror/addon/fold/foldgutter.js"></script>
+    <script type="text/javascript" src="assets/lib/codemirror/addon/fold/brace-fold.js"></script>
+    <script type="text/javascript" src="assets/lib/codemirror/addon/fold/xml-fold.js"></script>
+    <script type="text/javascript" src="assets/lib/codemirror/addon/fold/markdown-fold.js"></script>
+    <script type="text/javascript" src="assets/lib/codemirror/addon/fold/comment-fold.js"></script>
+
+
+    <!--For indent xml in code mirror editor-->
+    <script type="text/javascript" src="assets/lib/vkBeautify-wrapper/dist/vkbeautify.0.99.00.beta.js"></script>
+
+
+    <!--Base64 -->
+    <script src="assets/lib/angular-base64/angular-base64.min.js"></script>
+
+
+    <!--<script src="app/app.route.js"></script>-->
+    <script type="text/javascript" src="assets/lib/x2js/xml2json.js"></script>
+    <script type="text/javascript" src="assets/lib/angular-xml/angular-xml.js"></script>
+    <script type='text/javascript' src="assets/lib/angular-translate/angular-translate.min.js"></script>
+    <script type='text/javascript'
+            src="assets/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+    <script type='text/javascript'
+            src="assets/lib/angular-translate-loader-partial/angular-translate-loader-partial.min.js"></script>
+
+
+
+    <!--Module-->
+    <script src="app/app.module.js"></script>
+    <script src="app/app.constant.js"></script>
+    <script src="app/app.translation.js"></script>
+    <script src="app/app.route.js"></script>
+
+
+    <!--Services-->
+    <script src="app/common/requestServices.js"></script>
+    <script src="app/features/login/loginService.js"></script>
+    <script src="app/features/invoices/search/invoiceServices.js"></script>
+
+    <!--Interceptors-->
+    <script src="app/common/authenticationInterceptors.js"></script>
+
+
+    <!--Directives-->
+    <!--<script src="app/common/directives/showFocus.js"></script>-->
+
+    <!--Controllers-->
+    <script src="app/features/invoices/search/invoiceSearchController.js"></script>
+    <script src="app/features/login/loginControllers.js"></script>
+
+
+
+
+
+
+</head>
+<body>
+
+<it-side-menus>
+
+    <it-side-menu-header it-hide-button-menu="true">
+        <div class="container-fluid">
+            <div class="container-fluid">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="navbar-collapse collapse" collapse="navCollapsed">
+                    <ul class="nav navbar-nav navbar-right"  ng-show="isAuthenticated">
+                        <li>
+                            <a href="#/logout"><i class="fa fa-power-off fa-fw"></i>&nbsp; {{'DISCONNECT' | translate}}</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-left">
+                        <li>
+                            <a href="#/invoices/search"><i class="fa fa-file-text fa-fw"></i>&nbsp;Marklogic Editor</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </it-side-menu-header>
+
+    <!-- Center content -->
+    <it-side-menu-content>
+        <div ng-view></div>
+    </it-side-menu-content>
+
+</it-side-menus>
+
+
+</body>
+</html>
