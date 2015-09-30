@@ -51,7 +51,7 @@ invoiceSearchControllers.controller('InvoiceSearchCtrl', ['$scope', 'globalConst
                     enableGrouping: false
                 }, {
                     field: 'ItesoftData.Document.Class.ITESOFTFields.BusinessGroup',
-                    displayName: 'BUSINNESS_GROUPD',
+                    displayName: 'BUSINNESS_GROUP',
                     headerCellFilter: "translate",
                     enableSorting: true,
                     enableColumnMenu: true,

@@ -18,7 +18,7 @@ itesoftMlEditor.factory('InvoiceService', ['$rootScope', 'globalConstants', 'Req
 
 
         function _save(elementType, content, uri) {
-            var _url = _buildServiceUrl(globalConstants.SAVE_INVOICE_PATH);
+            var _url = RequestService.buildServiceUrl(globalConstants.SAVE_INVOICE_PATH);
             var _parameters = _buildSaveParam(elementType, uri);
             return RequestService.doPost(_url, content, _parameters);
         }
