@@ -60,15 +60,19 @@
     <div class="row">
         <div class="col-md-3">
             <div class="row">
-                <div class="btn-group">
-                    <button ng-disabled="disableActions" class="btn btn-primary" ng-click="search()">
-                        <span class="fa fa-search fa-lg"></span>
-                    </button>
-                    <button class="btn btn-primary  btn-danger" title="{{'CLEAR_CRITERIA' | translate}}"
-                            ng-click="clearCriteria()">
-                        <span class="fa fa-remove fa-lg"></span>
-                    </button>
-                </div>
+
+                <button ng-disabled="disableActions" class="btn btn-primary mg-left-5" ng-click="search()">
+                            <span>
+                              <i class="fa fa-search fa-lg"></i>
+                            </span>
+                </button>
+                <button class="btn btn-primary" title="{{'CLEAR_CRITERIA' | translate}}"
+                        ng-click="clearCriteria()">
+                            <span>
+                              <i class="fa fa-undo fa-lg"></i>
+                            </span>
+                </button>
+
                 <it-loader></it-loader>
             </div>
         </div>

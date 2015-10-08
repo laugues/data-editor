@@ -1,0 +1,38 @@
+<div class="full-height">
+    <it-side-menus>
+        <it-side-menu-header it-hide-button-menu="true">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="navbar-collapse collapse" collapse="navCollapsed">
+                        <ul class="nav navbar-nav navbar-right" ng-show="isAuthenticated">
+                            <li>
+                                <a href="#/logout"><i class="fa fa-power-off fa-fw"></i>&nbsp; {{'DISCONNECT' | translate}}</a>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-left">
+                            <li>
+                                <a href="#/invoices/search"><i class="fa fa-file-text fa-fw"></i>&nbsp;Marklogic Editor</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </it-side-menu-header>
+
+        <!-- Center content -->
+        <it-side-menu-content>
+            <!-- Login view -->
+            <div ng-if="!isAuthenticated" ng-include="'app/features/login/loginView.html'"></div>
+
+            <!-- View container -->
+            <div ng-if="isAuthenticated" class="container-fluid">
+                <!-- View content -->
+                <div ng-view class="ng-view-class"></div>
+            </div>
+
+        </it-side-menu-content>
+
+    </it-side-menus>
+</div>

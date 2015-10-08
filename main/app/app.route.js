@@ -1,23 +1,23 @@
 'use strict';
 
-itesoftMlEditor.config(['$routeProvider',
-    function ($routeProvider) {
-        $routeProvider.
-            when('/login', {
-                templateUrl: 'app/features/login/login.html',
-                controller: 'LoginCtrl'
-            }).
-            when('/logout', {
-                templateUrl: 'app/features/login/login.html',
-                controller: 'LogoutCtrl',
-                redirectTo: '/login'
-            }).
-            when('/invoices/search', {
-                templateUrl: 'app/features/invoices/search/invoice-search.html',
-                controller: 'InvoiceSearchCtrl'
-            }).
-            otherwise({
-                redirectTo: '/login'
-            });
+angular.module('MLEditor').config(['$routeProvider',
+        function ($routeProvider) {
+            $routeProvider.
+                when('/login', {
+                    templateUrl: 'app/features/login/loginView.html',
+                    controller: 'LoginController'
+                }).
+                when('/logout', {
+                    templateUrl: 'app/features/login/loginView.html',
+                    controller: 'LogoutController',
+                    redirectTo: '/login'
+                }).
+                when('/invoices/search', {
+                    templateUrl: 'app/features/invoices/search/invoice-search.html',
+                    controller: 'InvoiceSearchController'
+                }).
+                otherwise({
+                    redirectTo: '/login'
+                });
 
-    }]);
+        }]);

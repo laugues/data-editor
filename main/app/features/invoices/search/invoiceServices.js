@@ -1,6 +1,10 @@
 'use strict';
 
-itesoftMlEditor.factory('InvoiceService', ['$rootScope', 'globalConstants', 'RequestService',
+angular.module('MLEditor')
+    .factory('InvoiceService', [
+        '$rootScope',
+        'globalConstants',
+        'RequestService',
     function ($rootScope, globalConstants, RequestService) {
 
         var InvoiceService = {
@@ -11,7 +15,7 @@ itesoftMlEditor.factory('InvoiceService', ['$rootScope', 'globalConstants', 'Req
         };
 
         function _search(searchParamObj) {
-            var _url = RequestService.buildServiceUrl(globalConstants.SEARCH_INVOCE_PATH);
+            var _url = RequestService.buildServiceUrl(globalConstants.SEARCH_INVOICE_PATH);
             var _parameters = _buildSearchParams(searchParamObj);
             return RequestService.doGet(_url, _parameters);
         }

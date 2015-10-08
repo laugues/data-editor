@@ -8,13 +8,12 @@ module.exports = {
     /**
      * Header de la distribution.
      */
-    banner:
-        '/*!\n' +
-        ' * Copyright 2015 itesoft.\n' +
-        ' * http://itesoft.com/\n' +
-        ' *\n' +
-        ' * ML Editor, v<%= pkg.version %>\n' +
-        ' *Itesoft ML Editor App.*/\n' ,
+    banner: '/*!\n' +
+    ' * Copyright 2015 itesoft.\n' +
+    ' * http://itesoft.com/\n' +
+    ' *\n' +
+    ' * ML Editor, v<%= pkg.version %>\n' +
+    ' *Itesoft ML Editor App.*/\n',
 
     closureStart: '(function() {\n',
     closureEnd: '\n})();',
@@ -34,16 +33,16 @@ module.exports = {
     /**
      * Liste des librairies minifié à utiliser en prod
      */
-    vendorCssFiles : [
-        'main/assets/lib/components-font-awesome/css/font-awesome.min.css',
-        'main/assets/lib/angular-bootstrap/ui-bootstrap-csp.css',
-        'main/assets/lib/bootstrap/dist/css/bootstrap.min.css',
-        'main/assets/lib/google-code-prettify/bin/prettify.min.css',
-        'main/assets/css/itesoft.css',
-        'main/assets/css/material.css',
-        'main/assets/lib/angular-ui-grid/ui-grid.css'
+    vendorCssFiles: [
+        'main/assets/lib/codemirror/lib/codemirror.css',
+        'main/assets/lib/codemirror/theme/material.css',
+        'main/assets/lib/codemirror/addon/dialog/dialog.css',
+        'main/assets/lib/codemirror/addon/display/fullscreen.css',
+        'main/assets/lib/codemirror/addon/fold/foldgutter.css',
+        'main/assets/css/css.css',
+        'main/assets/lib/itesoft/fonts/main.min.css'
     ],
-    assetsDistFiles : [
+    assetsDistFiles: [
         '!main/assets/lib/**/*.js',
         '!main/assets/lib/**/*.html',
         '!main/assets/lib/**/*.md',
@@ -54,18 +53,50 @@ module.exports = {
         '!main/assets/scss/**/*.less',
         'main/assets/**/*'
     ],
+    /**
+     *
+     * Fichiers de locales pour les formats, les monnaies, les jours, mois et autres.
+     * A ne PAS minifier pour l'utilisation d'Angular Dynamic Locale
+     *
+     */
+    localeJsFiles: [
+        //'main/assets/lib/angular-i18n/angular-locale_fr.js',
+        //'main/assets/lib/angular-i18n/angular-locale_en.js',
+        //'main/assets/lib/angular-i18n/angular-locale_de.js'
+    ],
     vendorJavascriptFiles: [
-        'main/assets/lib/angular/angular.min.js',
-        'main/assets/lib/jquery/dist/jquery.min.js',
-        'main/assets/lib/angular-animate/angular-animate.min.js',
-        'main/assets/lib/angular-translate/angular-translate.min.js',
-        'main/assets/lib/angular-route/angular-route.min.js',
-        'main/assets/lib/angular-resource/angular-resource.min.js',
-        'main/assets/lib/angular-sanitize/angular-sanitize.min.js',
-        'main/assets/lib/angular-bootstrap/ui-bootstrap-tpls.min.js',
-        'main/assets/lib/google-code-prettify/bin/prettify.min.js',
-        'main/assets/lib/angular-ui-grid/ui-grid.min.js',
-        'main/assets/lib/angular-media-queries/match-media.js'
+        'main/assets/lib/angular-common/dist/assets/lib/vendor.min.js',
+        'main/assets/lib/angular-common/dist/app/itesoft.min.js',
 
+
+
+        'main/assets/lib/angular-translate-loader-partial/angular-translate-loader-partial.min.js',
+        'main/assets/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
+
+        'main/assets/lib/angular-ui-codemirror/ui-codemirror.min.js',
+        'main/assets/lib/codemirror/lib/codemirror.js',
+        'main/assets/lib/codemirror/mode/xml/xml.js',
+        'main/assets/lib/codemirror/addon/search/search.js',
+        'main/assets/lib/codemirror/addon/search/searchcursor.js',
+        'main/assets/lib/codemirror/addon/dialog/dialog.js',
+        'main/assets/lib/codemirror/addon/fold/xml-fold.js',
+        'main/assets/lib/codemirror/addon/edit/matchtags.js',
+        'main/assets/lib/codemirror/addon/search/match-highlighter.js',
+        'main/assets/lib/codemirror/addon/selection/active-line.js',
+        'main/assets/lib/codemirror/addon/display/placeholder.js',
+        'main/assets/lib/codemirror/addon/display/fullscreen.js',
+        'main/assets/lib/codemirror/addon/fold/foldcode.js',
+        'main/assets/lib/codemirror/addon/fold/foldgutter.js',
+        'main/assets/lib/codemirror/addon/fold/brace-fold.js',
+        'main/assets/lib/codemirror/addon/fold/xml-fold.js',
+        'main/assets/lib/codemirror/addon/fold/markdown-fold.js',
+        'main/assets/lib/codemirror/addon/fold/comment-fold.js',
+        'main/assets/lib/vkBeautify-wrapper/dist/vkbeautify.0.99.00.beta.js',
+        'main/assets/lib/angular-base64/angular-base64.min.js',
+        'main/assets/lib/x2js/xml2json.js',
+        'main/assets/lib/angular-xml/angular-xml.js'/*,*/
+        //'main/assets/lib/angular-translate/angular-translate.min.js',
+        //'main/assets/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
+        //'main/assets/lib/angular-translate-loader-partial/angular-translate-loader-partial.min.js'
     ]
 };
