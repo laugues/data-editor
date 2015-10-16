@@ -1,50 +1,68 @@
 'use strict';
 
 angular.module('MLEditor')
-    .factory('InvoiceService', [
+    .factory('InvoiceQueuedService', [
         'globalConstants',
         'RequestService',
         function (globalConstants, RequestService) {
 
-            var InvoiceService = {
+            var InvoiceQueuedService = {
                 search: _search,
                 save: _save,
                 get: _get,
+                getLight: _getLight,
                 delete: _delete
             }
 
             function _search(searchParamObj) {
-                var _url = RequestService.buildServiceUrl(globalConstants.INVOICE.SEARCH.PATH);
+                var _url = RequestService.buildServiceUrl(globalConstants.INVOICE_QUEUED.SEARCH.PATH);
                 var _parameters = _buildSearchParams(searchParamObj);
                 return RequestService.doGet(_url, _parameters);
             }
 
 
             function _save(elementType, content, uri) {
-                var _url = RequestService.buildServiceUrl(globalConstants.INVOICE.SAVE.PATH);
+                var _url = RequestService.buildServiceUrl(globalConstants.INVOICE_QUEUED.SAVE.PATH);
                 var _parameters = _buildSaveParam(elementType, uri);
                 return RequestService.doPost(_url, content, _parameters);
             }
 
             function _delete(itesoftid) {
-                var _url = RequestService.buildServiceUrl(globalConstants.INVOICE.DELETE.PATH);
+                var _url = RequestService.buildServiceUrl(globalConstants.INVOICE_QUEUED.DELETE.PATH);
                 var _parameters = _buildItesoftIdParam(itesoftid);
                 return RequestService.doGet(_url, _parameters);
             }
 
-            function _get(itesoftid, mode) {
-                var _url = RequestService.buildServiceUrl(globalConstants.INVOICE.GET.PATH);
-                var _parameters = _buildGetInvoiceParams(itesoftid, mode);
+            function _get(uri, mode) {
+                var _url = RequestService.buildServiceUrl(globalConstants.INVOICE_QUEUED.GET.PATH);
+                var _parameters = _buildGetInvoiceParams(uri, mode);
+                return RequestService.doGet(_url, _parameters);
+            }
+
+            function _getLight(uri, mode) {
+                var _url = RequestService.buildServiceUrl(globalConstants.INVOICE_QUEUED.GET_LIGHT.PATH);
+                var _parameters = _buildGetInvoiceParams(uri, mode);
                 return RequestService.doGet(_url, _parameters);
             }
 
 
-            function _buildGetInvoiceParams(itesoftId, mode) {
+            function _buildGetInvoiceParams(uri, mode) {
                 var params = {};
 
-                params.itesoftid = _buildItesoftIdParam(itesoftId).itesoftid;
+                params.uri = _buildUriParam(uri).uri;
                 params.mode = _buildModeParam(mode).mode;
 
+                return params;
+
+            }
+
+            function _buildUriParam(uri) {
+                var params = {};
+
+                params.itesoftid = '';
+                if (typeof uri !== 'undefined' && uri != '') {
+                    params.uri = uri;
+                }
                 return params;
 
             }
@@ -122,12 +140,12 @@ angular.module('MLEditor')
                 }
 
                 params.mode = searchParams.mode;
-                params.pageNum = globalConstants.INVOICE.SEARCH.RESULT_MAX_NUMBER;
+                params.pageNum = globalConstants.INVOICE_QUEUED.SEARCH.RESULT_MAX_NUMBER;
 
                 return params;
 
 
             }
 
-            return InvoiceService;
+            return InvoiceQueuedService;
         }]);

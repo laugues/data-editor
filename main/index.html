@@ -8,8 +8,8 @@
 
 
     <link rel="stylesheet" type="text/css" href="assets/lib/angular-common/dist/assets/fonts/itesoft-bundle.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/css.css">
     <link rel="stylesheet" type="text/css" href="assets/lib/codemirror/lib/codemirror.css">
+
 
     <!--CSS for codemirror-->
     <link rel="stylesheet" type="text/css" href="assets/lib/codemirror/theme/material.css">
@@ -28,7 +28,7 @@
     <script type='text/javascript'
             src="assets/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
 
-
+    <link rel="stylesheet" type="text/css" href="assets/css/css.css">
     <!------------------------------->
     <!-------  Code mirror ---------->
     <!------------------------------->
@@ -82,11 +82,12 @@
     <script type="text/javascript" src="app/app.route.js"></script>
 
 
-    <!--Controllers-->
-    <script type="text/javascript" src="app/common/controllers/mainController.js"></script>
+    <!--Services-->
     <script type="text/javascript" src="app/common/requestServices.js"></script>
     <script type="text/javascript" src="app/features/login/loginService.js"></script>
     <script type="text/javascript" src="app/features/invoices/search/invoiceServices.js"></script>
+    <script type="text/javascript" src="app/features/invoices/queued/invoiceQueuedServices.js"></script>
+    <script type="text/javascript" src="app/features/configuration/files/configurationFilesServices.js"></script>
 
     <!--Interceptors-->
     <script type="text/javascript" src="app/common/authenticationInterceptors.js"></script>
@@ -96,8 +97,12 @@
     <!--<script src="app/common/directives/showFocus.js"></script>-->
 
     <!--Controllers-->
+    <script type="text/javascript" src="app/common/controllers/mainController.js"></script>
     <script type="text/javascript" src="app/features/invoices/search/invoiceSearchController.js"></script>
+    <script type="text/javascript" src="app/features/invoices/queued/invoiceQueuedController.js"></script>
     <script type="text/javascript" src="app/features/login/loginController.js"></script>
+    <script type="text/javascript" src="app/features/configuration/files/configurationFilesController.js"></script>
+
 
 
 </head>

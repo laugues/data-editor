@@ -3,6 +3,10 @@
     height: 100%;
 }
 
+.it-side-menu {
+    z-index:700;
+}
+
 .CodeMirror-fullscreen{
     z-index:99999999;
     padding-top: 80px;
@@ -17,6 +21,7 @@
 .CodeMirror pre.CodeMirror-placeholder {
     color: #999;
 }
+
 
 .mg-top-10 {
     margin-top: 10px;

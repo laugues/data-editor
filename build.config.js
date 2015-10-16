@@ -94,9 +94,6 @@ module.exports = {
         'main/assets/lib/vkBeautify-wrapper/dist/vkbeautify.0.99.00.beta.js',
         'main/assets/lib/angular-base64/angular-base64.min.js',
         'main/assets/lib/x2js/xml2json.js',
-        'main/assets/lib/angular-xml/angular-xml.js'/*,*/
-        //'main/assets/lib/angular-translate/angular-translate.min.js',
-        //'main/assets/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
-        //'main/assets/lib/angular-translate-loader-partial/angular-translate-loader-partial.min.js'
+        'main/assets/lib/angular-xml/angular-xml.js'
     ]
 };

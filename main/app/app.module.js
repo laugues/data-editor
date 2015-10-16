@@ -7,6 +7,7 @@ angular.module('MLEditor', [
     'ngRoute',
     'pascalprecht.translate',
     'ui.codemirror',
+    'ui.grid.infiniteScroll',
     'base64'
 ]).config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('AuthenticationInterceptor');
@@ -14,4 +15,9 @@ angular.module('MLEditor', [
     $httpProvider.defaults.headers.common['Authorization'] = "";
     $translate.refresh();
     $translate.use('fr');
+}])  .run(['$rootScope', '$route', function ($rootScope, $route) {
+    $rootScope.$on('$routeChangeSuccess', function () {
+        $rootScope.pageTitle = $route.current.title;
+    });
 }]);
+
