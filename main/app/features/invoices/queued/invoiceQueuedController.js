@@ -14,33 +14,9 @@ angular.module('MLEditor')
 
             $scope.lastItemIdentifier = null;
             $scope.invoiceXmlDOM = null;
-
-
-            $scope.editorOptions = {
-                lineWrapping: true,
-                lineNumbers: true,
-                indentWithTabs: true,
-                matchTags: {bothTags: true},
-                extraKeys: {
-                    "Ctrl-J": "toMatchingTag",
-                    "F11": function (cm) {
-                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                    },
-                    "Esc": function (cm) {
-                        if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                    },
-                    "Ctrl-Q": function (cm) {
-                        cm.foldCode(cm.getCursor());
-                    }
-                },
-                foldGutter: true,
-                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-                styleActiveLine: true,
-                mode: 'xml'
-            };
-
             $scope.masterDetails = {};
             $scope.invoices = [];
+
             $scope.masterDetails = {
                 columnDefs: [
                     {
@@ -112,7 +88,7 @@ angular.module('MLEditor')
             };
 
 
-            function _itesoftIdFromItem(item) {
+            function _getItemIdentifierFromItem(item) {
 
                 var result = null;
                 if (item != null && item.uri != null) {
@@ -122,9 +98,9 @@ angular.module('MLEditor')
                 return result;
             }
 
-            function _getOriginalItesoftId() {
+            function _getOriginalItemIdentifier() {
                 var originalItem = $scope.masterDetails.getCurrentItemWrapper().originalItem;
-                return _itesoftIdFromItem(originalItem);
+                return _getItemIdentifierFromItem(originalItem);
             }
 
 
@@ -133,10 +109,10 @@ angular.module('MLEditor')
                 $scope.itemIdentifier = null;
                 if ($scope.masterDetails.getCurrentItemWrapper() != null && typeof $scope.masterDetails.getCurrentItemWrapper() !== 'undefined') {
 
-                    var originalItesoftId = _getOriginalItesoftId();
+                    var originalItemIdentifier = _getOriginalItemIdentifier();
 
-                    if (originalItesoftId != null) {
-                        $scope.itemIdentifier = originalItesoftId;
+                    if (originalItemIdentifier != null) {
+                        $scope.itemIdentifier = originalItemIdentifier;
                     }
                 }
 
@@ -477,8 +453,8 @@ angular.module('MLEditor')
             };
 
 
-            $scope.sendDeleteRequest = function (itesoftId, dataList, itemIndex) {
-                InvoiceQueuedService.delete(itesoftId).then(function (response) {
+            $scope.sendDeleteRequest = function (itemIdentifier, dataList, itemIndex) {
+                InvoiceQueuedService.delete(itemIdentifier).then(function (response) {
 
                     var deleteResult = _buildResultResponseAlertText(response);
                     $scope.showAlertPopup("DELETE_RESULT", deleteResult);
@@ -503,7 +479,7 @@ angular.module('MLEditor')
             function _removeItems(items, dataList) {
                 angular.forEach(items, function (entry) {
                     var index = dataList.indexOf(entry);
-                    $scope.sendDeleteRequest(_itesoftIdFromItem(entry), dataList, index);
+                    $scope.sendDeleteRequest(_getItemIdentifierFromItem(entry), dataList, index);
                 })
             };
 

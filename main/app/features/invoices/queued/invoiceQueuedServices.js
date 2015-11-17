@@ -27,9 +27,9 @@ angular.module('MLEditor')
                 return RequestService.doPost(_url, content, _parameters);
             }
 
-            function _delete(itesoftid) {
+            function _delete(uri) {
                 var _url = RequestService.buildServiceUrl(globalConstants.INVOICE_QUEUED.DELETE.PATH);
-                var _parameters = _buildItesoftIdParam(itesoftid);
+                var _parameters = _buildUriParam(uri);
                 return RequestService.doGet(_url, _parameters);
             }
 

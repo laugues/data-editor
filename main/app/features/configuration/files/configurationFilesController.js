@@ -14,31 +14,6 @@ angular.module('MLEditor')
 
             $scope.lastItemIdentifier = null;
             $scope.currentXmlDOM = null;
-
-
-            $scope.editorOptions = {
-                lineWrapping: true,
-                lineNumbers: true,
-                indentWithTabs: true,
-                matchTags: {bothTags: true},
-                extraKeys: {
-                    "Ctrl-J": "toMatchingTag",
-                    "F11": function (cm) {
-                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                    },
-                    "Esc": function (cm) {
-                        if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                    },
-                    "Ctrl-Q": function (cm) {
-                        cm.foldCode(cm.getCursor());
-                    }
-                },
-                foldGutter: true,
-                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-                styleActiveLine: true,
-                mode: 'xml'
-            };
-
             $scope.masterDetails = {};
             $scope.files = [
                 {
@@ -50,6 +25,7 @@ angular.module('MLEditor')
                     "path": "/db/models/flow-indicators.xml"
                 }
             ];
+
             $scope.masterDetails = {
                 columnDefs: [
                     {
