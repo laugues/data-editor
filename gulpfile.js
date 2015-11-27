@@ -15,6 +15,7 @@ var header = require('gulp-header');
 var footer = require('gulp-footer');
 var clean = require('gulp-clean');
 var flatten = require('gulp-flatten');
+var ghPages = require('gulp-gh-pages');
 var buildConfig = require('./build.config.js');
 var sh = require('shelljs');
 var dedupe = require('gulp-dedupe');
@@ -121,6 +122,12 @@ gulp.task('html', function() {
         // And put it in the dist folder
         .pipe(gulp.dest('dist/app'));
 });
+
+gulp.task('deploy', function() {
+    return gulp.src(['!./node_modules/**/*','!./main/**/*','!./*','./**/*'])
+            .pipe(ghPages());
+});
+
 
 /**
  * Copie des fonts présentes dans les librairies
