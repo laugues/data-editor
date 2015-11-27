@@ -1,0 +1,46 @@
+<div class="container-fluid">
+    <div class="row">
+
+        <it-master-detail>
+            <it-master it-master-data="files"
+                       it-lang="'fr'"
+                       it-no-data-msg="{{'NO_DATA_AVAILABLE' | translate}}"
+                       it-master-detail-control="masterDetails"
+                       it-lock-on-change="true"
+                       it-no-detail-msg="{{getDetailMessage()}}">
+                <it-master-header it-search-placeholder="{{'SEARCH_PLACEHOLDER' | translate}}">
+                    <!--<div class="btn-group">-->
+                        <!--<button class="btn btn-primary  btn-success"-->
+                                <!--title="{{'CONFIGURATION_FILES.BUTTON.RELOAD_FILE' | translate}}"-->
+                                <!--ng-click="reloadFiles()">-->
+                            <!--<span class="fa fa-plus fa-lg"></span>-->
+                        <!--</button>-->
+                    <!--</div>-->
+                </it-master-header>
+            </it-master>
+            <it-detail>
+                <it-detail-header>
+                    <div>
+                        <button ng-disabled="!currentItemWrapper.hasChanged" class="btn btn-primary  btn-danger"
+                                itle="{{'UPDATE' | translate}}"
+                                ng-click="save()">
+                            <span class="fa fa-floppy-o fa-lg"></span>
+                        </button>
+                    </div>
+                    <button class="btn btn-success" title="{{'UNDO' | translate}}" ng-click="undoChange()">
+                        <span class="fa fa-undo fa-lg"></span>
+                    </button>
+                </it-detail-header>
+                <it-detail-content>
+                            <textarea ui-codemirror="editorOptions" name="invoicecontent"
+                                      class="it-fill form-control floating-label"
+                                      type="text"
+                                      placeholder="Insert content of invoice here..."
+                                      ng-model="currentItemWrapper.currentItem.xml"></textarea>
+
+
+                </it-detail-content>
+            </it-detail>
+        </it-master-detail>
+    </div>
+</div>

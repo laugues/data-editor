@@ -2,22 +2,22 @@
 
 /* App Module */
 
-var itesoftMlEditor = angular.module('itesoft-ml-editor', [
+angular.module('MLEditor', [
     'itesoft',
     'ngRoute',
-    'ui.codemirror',
-    //'xml',
     'pascalprecht.translate',
-    'base64',
-    'authenticationInterceptors',
-    'invoiceSearchControllers',
-    'loginControllers'
-])
-
-
-
-itesoftMlEditor.run(['$http','$translate', function ($httpProvider, $translate) {
+    'ui.codemirror',
+    'ui.grid.infiniteScroll',
+    'base64'
+]).config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push('AuthenticationInterceptor');
+}]).run(['$http', '$translate', function ($httpProvider, $translate) {
     $httpProvider.defaults.headers.common['Authorization'] = "";
     $translate.refresh();
     $translate.use('fr');
+}])  .run(['$rootScope', '$route', function ($rootScope, $route) {
+    $rootScope.$on('$routeChangeSuccess', function () {
+        $rootScope.pageTitle = $route.current.title;
+    });
 }]);
+

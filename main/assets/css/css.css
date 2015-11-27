@@ -3,6 +3,10 @@
     height: 100%;
 }
 
+.it-side-menu {
+    z-index:700;
+}
+
 .CodeMirror-fullscreen{
     z-index:99999999;
     padding-top: 80px;
@@ -18,10 +22,12 @@
     color: #999;
 }
 
+
 .mg-top-10 {
     margin-top: 10px;
 }
 
-.mg-left-10 {
-    margin-left: 50px;
+.mg-left-5 {
+    margin-left: 5px;
 }
+

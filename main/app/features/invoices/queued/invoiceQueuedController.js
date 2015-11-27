@@ -3,16 +3,16 @@
 /* Controllers */
 
 angular.module('MLEditor')
-    .controller('InvoiceSearchController', [
+    .controller('InvoiceQueuedController', [
         '$scope',
         'globalConstants',
         'itPopup',
-        'InvoiceService',
+        'InvoiceQueuedService',
         '$translate',
         '$window',
-        function ($scope, globalConstants, itPopup, InvoiceService, $translate, $window) {
+        function ($scope, globalConstants, itPopup, InvoiceQueuedService, $translate, $window) {
 
-            $scope.lastItesoftId = null;
+            $scope.lastItemIdentifier = null;
             $scope.invoiceXmlDOM = null;
             $scope.masterDetails = {};
             $scope.invoices = [];
@@ -20,14 +20,22 @@ angular.module('MLEditor')
             $scope.masterDetails = {
                 columnDefs: [
                     {
-                        field: 'ItesoftData.Document.Class.ITESOFTFields.ItesoftId',
+                        field: 'range',
+                        displayName: 'UPDATE_RANGE',
+                        headerCellFilter: "translate",
+                        enableSorting: true,
+                        enableColumnMenu: true,
+                        enableGrouping: false
+                    },
+                    {
+                        field: 'itesoftId',
                         displayName: 'ITESOFT_ID',
                         headerCellFilter: "translate",
                         enableSorting: true,
                         enableColumnMenu: true,
                         enableGrouping: false
                     }, {
-                        field: 'ItesoftData.Document.Class.ITESOFTFields.BusinessGroup',
+                        field: 'businessGroup',
                         displayName: 'BUSINNESS_GROUP',
                         headerCellFilter: "translate",
                         enableSorting: true,
@@ -35,21 +43,14 @@ angular.module('MLEditor')
                         enableGrouping: false
                     },
                     {
-                        field: 'ItesoftData.Document.Class.HeaderFields.BATCHNAME',
+                        field: 'batchName',
                         displayName: 'BATCH_NAME',
                         headerCellFilter: "translate",
                         enableSorting: true,
                         enableColumnMenu: false
                     },
                     {
-                        field: 'ItesoftData.Document.Class.HeaderFields.STATE',
-                        displayName: 'STATE',
-                        headerCellFilter: "translate",
-                        enableSorting: true,
-                        enableColumnMenu: true
-                    },
-                    {
-                        field: 'ItesoftData.Document.Class.HeaderFields.SCANDATE',
+                        field: 'scanDate',
                         displayName: 'SCAN_DATE',
                         headerCellFilter: "translate",
                         enableSorting: true,
@@ -87,51 +88,44 @@ angular.module('MLEditor')
             };
 
 
-            function _itesoftIdFromItem(item) {
+            function _getItemIdentifierFromItem(item) {
 
                 var result = null;
-                if (
-                    item != null &&
-                    item.ItesoftData != null &&
-                    item.ItesoftData.Document != null &&
-                    item.ItesoftData.Document.Class != null &&
-                    item.ItesoftData.Document.Class.ITESOFTFields != null &&
-                    item.ItesoftData.Document.Class.ITESOFTFields.ItesoftId != null
-                ) {
-                    result = item.ItesoftData.Document.Class.ITESOFTFields.ItesoftId;
+                if (item != null && item.uri != null) {
+                    result = item.uri;
                 }
 
                 return result;
             }
 
-            function _getOriginalItesoftId() {
+            function _getOriginalItemIdentifier() {
                 var originalItem = $scope.masterDetails.getCurrentItemWrapper().originalItem;
-                return _itesoftIdFromItem(originalItem);
+                return _getItemIdentifierFromItem(originalItem);
             }
 
 
             $scope.$watch('masterDetails.getCurrentItemWrapper().originalItem', function () {
 
-                $scope.invoiceId = null;
+                $scope.itemIdentifier = null;
                 if ($scope.masterDetails.getCurrentItemWrapper() != null && typeof $scope.masterDetails.getCurrentItemWrapper() !== 'undefined') {
 
-                    var originalItesoftId = _getOriginalItesoftId();
+                    var originalItemIdentifier = _getOriginalItemIdentifier();
 
-                    if (originalItesoftId != null) {
-                        $scope.invoiceId = originalItesoftId;
+                    if (originalItemIdentifier != null) {
+                        $scope.itemIdentifier = originalItemIdentifier;
                     }
                 }
 
-                if (typeof $scope.invoiceId !== "undefined" && $scope.invoiceId != null && $scope.invoiceId !== $scope.lastItesoftId) {
+                if (typeof $scope.itemIdentifier !== "undefined" && $scope.itemIdentifier != null && $scope.itemIdentifier !== $scope.lastItemIdentifier) {
 
-                    InvoiceService.get($scope.invoiceId, 'xml').then(function (response) {
+                    InvoiceQueuedService.get($scope.itemIdentifier, 'xml').then(function (response) {
 
                         $scope.loadXmlInCurrentItem(response);
 
                         $scope.$applyAsync(function () {
                             $scope.masterDetails.setCurrentItem($scope.invoices[$scope.masterDetails.getCurrentItemWrapper().index]);
                         });
-                        $scope.lastItesoftId = $scope.invoiceId;
+                        $scope.lastItemIdentifier = $scope.itemIdentifier;
 
                     }, function (response) {
                         $scope.data = response.data || "Request failed";
@@ -162,19 +156,21 @@ angular.module('MLEditor')
             }
             $scope.search = function () {
                 $scope.invoices = [];
-                InvoiceService.search($scope.search).then(function (response) {
+                InvoiceQueuedService.search($scope.search).then(function (response) {
 
                     $scope.status = response.status;
-                    if (typeof  response.data.invoice !== 'undefined') {
-                        $scope.invoices = response.data.invoice;
+                    if (typeof  response.data.result.queuedInvoice !== 'undefined') {
+                        $scope.invoices = response.data.result.queuedInvoice;
 
+                        $scope.total = response.data.result.total;
+                        $scope.pageStart = response.data.result.pageStart;
+                        $scope.pageNum = response.data.result.pageNum;
 
                         //Resize event for prevent uigrid sizing problems
                         $scope.$applyAsync(function () {
                             var event = document.createEvent('Event');
                             event.initEvent('resize', true /*bubbles*/, true /*cancelable*/);
                             $window.dispatchEvent(event);
-                            console.log("resize event...");
                         });
                     }
                 }, function (response) {
@@ -264,6 +260,35 @@ angular.module('MLEditor')
             };
 
 
+
+            function _getItesoftIdFromDOM() {
+                var result = null;
+
+                if (typeof $scope.invoiceXmlDOM !== 'undefined' && $scope.invoiceXmlDOM != null) {
+                    var itesoftidFromDOM = $scope.invoiceXmlDOM.getElementsByTagName("ItesoftId");
+
+                    if (itesoftidFromDOM != null && typeof itesoftidFromDOM !== 'undefined' && itesoftidFromDOM.length > 0) {
+
+                        if (itesoftidFromDOM[0] != null && typeof itesoftidFromDOM[0].innerHTML !== 'undefined' && itesoftidFromDOM[0].innerHTML !== '') {
+                            result = itesoftidFromDOM[0].innerHTML;
+                        } else {
+                            //for IE
+                            var itesoftidFromDOMChildNode = itesoftidFromDOM[0].childNodes;
+                            if (itesoftidFromDOMChildNode.length > 0 && itesoftidFromDOMChildNode[0] != null && typeof itesoftidFromDOMChildNode[0] !== 'undefined') {
+                                result = itesoftidFromDOMChildNode[0].nodeValue;
+                            } else {
+                                console.error("Itesoft id from xml is null or empty");
+                            }
+                        }
+                    } else {
+                        console.error("Cannot find 'ItesoftId' element in invoice xml");
+                    }
+                } else {
+                    console.error("$scope.invoiceXmlDOM is undefined or null. So cannot retrieve 'ItesoftId' element in xml.");
+                }
+                return result;
+            };
+
             $scope.save = function () {
 
                 var xmlChecked = _checkXml($scope.masterDetails.getCurrentItemWrapper().currentItem.xml);
@@ -272,11 +297,17 @@ angular.module('MLEditor')
                     return;
                 }
 
+                if(typeof $scope.itemIdentifier === 'undefined' || $scope.itemIdentifier == null){
+                    $scope.itemIdentifier = _getItesoftIdFromDOM();
+                    console.log("$scope.itemIdentifier after set = ",$scope.itemIdentifier);
 
-                InvoiceService.save(
-                    'INVOICE',
+                }
+
+                console.log("$scope.itemIdentifier = ",$scope.itemIdentifier);
+                InvoiceQueuedService.save(
+                    'QUEUE',
                     $scope.masterDetails.getCurrentItemWrapper().currentItem.xml,
-                    '/db/invoices/2002/01/01/TEST/INV_20020101_TEST.xml').then(
+                    $scope.itemIdentifier).then(
                     function (response) {
 
                         angular.copy($scope.masterDetails.getCurrentItemWrapper().currentItem,
@@ -285,11 +316,9 @@ angular.module('MLEditor')
                         var saveResult = _buildResultResponseAlertText(response);
                         $scope.showAlertPopup("SAVE_RESULT", saveResult);
 
-                        $scope.invoiceId = _getItesoftIdFromDOM();
+                        InvoiceQueuedService.getLight($scope.itemIdentifier, 'json').then(function (response) {
 
-                        InvoiceService.get($scope.invoiceId, 'json').then(function (response) {
-
-                            _loadJsonInItem(response);
+                                _loadJsonInItem(response);
 
                         }, function (response) {
                             $scope.data = response.data || "Request failed";
@@ -362,10 +391,11 @@ angular.module('MLEditor')
 
             function _loadJsonInItem(response) {
                 var lazyLoadedItem = {};
-
-                lazyLoadedItem = response.data;
+                lazyLoadedItem = response.data.queuedInvoice;
                 $scope.$applyAsync(function () {
+
                     lazyLoadedItem.xml = $scope.masterDetails.getCurrentItemWrapper().currentItem.xml;
+
                     angular.copy(lazyLoadedItem, $scope.invoices[$scope.masterDetails.getCurrentItemWrapper().index]);
                 });
 
@@ -423,8 +453,8 @@ angular.module('MLEditor')
             };
 
 
-            $scope.sendDeleteRequest = function (itesoftId, dataList, itemIndex) {
-                InvoiceService.delete(itesoftId).then(function (response) {
+            $scope.sendDeleteRequest = function (itemIdentifier, dataList, itemIndex) {
+                InvoiceQueuedService.delete(itemIdentifier).then(function (response) {
 
                     var deleteResult = _buildResultResponseAlertText(response);
                     $scope.showAlertPopup("DELETE_RESULT", deleteResult);
@@ -449,7 +479,7 @@ angular.module('MLEditor')
             function _removeItems(items, dataList) {
                 angular.forEach(items, function (entry) {
                     var index = dataList.indexOf(entry);
-                    $scope.sendDeleteRequest(_itesoftIdFromItem(entry), dataList, index);
+                    $scope.sendDeleteRequest(_getItemIdentifierFromItem(entry), dataList, index);
                 })
             };
 

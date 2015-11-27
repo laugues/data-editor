@@ -1,0 +1,70 @@
+<div class="full-height" ng-controller="MainController">
+    <it-side-menus>
+        <it-side-menu-header it-hide-button-menu="!isAuthenticated">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="navbar-collapse collapse" collapse="navCollapsed">
+                        <ul class="nav navbar-nav navbar-right" ng-show="isAuthenticated">
+                            <li>
+                                <a href="#/logout"><i class="fa fa-power-off fa-fw"></i>&nbsp; {{'DISCONNECT' |
+                                    translate}}</a>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-left">
+                            <li>
+                                <a ng-if="$root.pageTitle !== 'undefined' && $root.pageTitle != null" href="#/invoices/search">
+                                    <i class="fa fa-file-text fa-fw"></i>&nbsp;Marklogic Editor&nbsp;/&nbsp;{{$root.pageTitle | translate}}
+                                </a>
+                                <a ng-if="$root.pageTitle === 'undefined' || $root.pageTitle == null" href="#/invoices/search">
+                                    <i class="fa fa-file-text fa-fw"></i>&nbsp;Marklogic Editor
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </it-side-menu-header>
+        <it-side-menu ng-show="isAuthenticated">
+            <!-- Side Menu -->
+            <ul it-nav-active="active" class="nav navbar-nav nav-pills nav-stacked list-group">
+                <!--<li it-collapsed-item>-->
+                <!--<a href=""><h5><i class="fa fa-music"></i>&nbsp;{{'GLOBAL.SIDE_MENU.DOCUMENTS.TITLE' | translate}}-->
+                <!--</h5></a>-->
+                <!--<ul class="nav navbar-nav nav-pills nav-stacked it-menu-animated">-->
+                <!--<li>-->
+                <!--<a href="#/invoices/search" translate>GLOBAL.SIDE_MENU.DOCUMENTS.INVOICE_TITLE</a>-->
+                <!--</li>-->
+                <!--</ul>-->
+                <!--</li>-->
+                <li>
+                    <a href="#/invoices/search"><h5><i class="fa fa-file-text"></i>&nbsp;{{'GLOBAL.SIDE_MENU.DOCUMENTS.INVOICE_TITLE'
+                        | translate}}</h5></a>
+                </li>
+                <li>
+                    <a href="#/invoices/queued"><h5><i class="fa fa-file-text"></i>&nbsp;{{'GLOBAL.SIDE_MENU.DOCUMENTS.INVOICE_QUEUED_TITLE'
+                        | translate}}</h5></a>
+                </li>
+                <li>
+                    <a href="#/configuration/files"><h5><i class="fa fa-list"></i>&nbsp;{{'GLOBAL.SIDE_MENU.CONFIGURATION.TITLE'
+                        | translate}}</h5></a>
+                </li>
+            </ul>
+        </it-side-menu>
+
+        <!-- Center content -->
+        <it-side-menu-content>
+            <!-- Login view -->
+            <div ng-if="!isAuthenticated" ng-include="'app/features/login/loginView.html'"></div>
+
+            <!-- View container -->
+            <div ng-if="isAuthenticated" class="container-fluid">
+                <!-- View content -->
+                <div ng-view class="ng-view-class"></div>
+            </div>
+
+        </it-side-menu-content>
+
+    </it-side-menus>
+</div>

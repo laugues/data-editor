@@ -1,8 +1,10 @@
 'use strict';
 
-var authenticationInterceptors = angular.module('authenticationInterceptors', []);
-
-authenticationInterceptors.factory('AuthInterceptor', ['$rootScope', '$q',  '$location',
+angular.module('MLEditor')
+    .factory('AuthenticationInterceptor', [
+        '$rootScope',
+        '$q',
+        '$location',
     function ($rootScope, $q,  $location) {
         var AuthInterceptor = {
             request: function (config) {
@@ -19,8 +21,3 @@ authenticationInterceptors.factory('AuthInterceptor', ['$rootScope', '$q',  '$lo
         };
         return AuthInterceptor;
     }]);
-
-
-authenticationInterceptors.config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.interceptors.push('AuthInterceptor');
-}]);
