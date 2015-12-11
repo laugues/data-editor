@@ -2,7 +2,7 @@
   "version": "0.0.0",
   "private": true,
   "name": "ml-editor",
-  "description": "Application for edit documents stored in marklogic",
+  "description": "Manipulation of documents",
   "devDependencies": {
     "bower": "^1.5.3",
     "gulp": "^3.5.6",

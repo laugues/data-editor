@@ -9,7 +9,8 @@ angular.module('MLEditor')
         var InvoiceService = {
             search: _search,
             save: _save,
-            get: _get
+            get: _get,
+            buildErrorResponseAlertText : _buildErrorResponseAlertText
         };
 
 
@@ -90,6 +91,10 @@ angular.module('MLEditor')
             }
             return params;
 
+        }
+
+        function _buildErrorResponseAlertText(response) {
+            return RequestService.buildErrorResponseAlertText(response)
         }
 
 

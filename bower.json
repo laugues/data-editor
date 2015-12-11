@@ -1,6 +1,6 @@
 {
   "name": "ml-editor",
-  "description": "Application for edit documents stored in marklogic",
+  "description": "Manipulation of documents",
   "version": "0.0.0",
   "license": "MIT",
   "private": true,

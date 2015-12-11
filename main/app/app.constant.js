@@ -5,7 +5,6 @@
 angular.module('MLEditor').constant('globalConstants',
     {
         //URL CONSTTANTS
-        "DATA_SERVER_CONNECTION": "http://CLILDS",
         "DATA_DATABASE_NAME": "das-db",
         "LOGIN_PATH": "/das-db/rest/db/storedXqueries/login.xqy",
         "INVOICE": {

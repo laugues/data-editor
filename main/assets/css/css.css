@@ -31,3 +31,15 @@
     margin-left: 5px;
 }
 
+.alert-popup-error{
+    color: red;
+}
+
+.alert-popup-warning{
+    color: orange;
+}
+
+.alert-popup-success{
+    color: green;
+}
+

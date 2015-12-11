@@ -12,8 +12,8 @@ module.exports = {
     ' * Copyright 2015 itesoft.\n' +
     ' * http://itesoft.com/\n' +
     ' *\n' +
-    ' * ML Editor, v<%= pkg.version %>\n' +
-    ' *Itesoft ML Editor App.*/\n',
+    ' * Documents Editor, v<%= pkg.version %>\n' +
+    ' *Itesoft Documents Editor App.*/\n',
 
     closureStart: '(function() {\n',
     closureEnd: '\n})();',
