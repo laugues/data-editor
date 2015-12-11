@@ -8,17 +8,31 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <input it-input
-                               it-label="{{'USER_LOGIN' | translate}}"
+                               it-label="{{'LOGIN.USER.URL' | translate}}"
                                required=""
                                name="user"
                                class="form-control floating-label mg-top-10"
                                type="text"
-                               ng-model="account.user"
+                               ng-model="account.url"
                                autofocus>
                     </div>
                     <div class="form-group">
-                        <input it-input required="" name="password" class="form-control floating-label" type="password"
-                               it-label="{{'USER_PASSWORD' | translate}}" ng-model="account.password">
+                        <input it-input
+                               it-label="{{'LOGIN.USER.LOGIN' | translate}}"
+                               required=""
+                               name="user"
+                               class="form-control floating-label mg-top-10"
+                               type="text"
+                               ng-model="account.user">
+                    </div>
+                    <div class="form-group">
+                        <input it-input
+                               required=""
+                               name="password"
+                               class="form-control floating-label"
+                               type="password"
+                               it-label="{{'LOGIN.USER.PASSWORD' | translate}}"
+                               ng-model="account.password">
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -41,7 +55,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-errors" style="color: red;">
-                        <div ng-show="loginFailed == true" class="form-error" ng-message="required">{{'BAD_CREDENTIALS'
+                        <div ng-show="loginFailed == true" class="form-error" ng-message="required">{{'LOGIN.ERROR.BAD_CREDENTIALS'
                             | translate}}
                         </div>
                     </div>

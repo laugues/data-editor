@@ -4,16 +4,17 @@
 
 angular.module('MLEditor')
     .controller('InvoiceSearchController', [
+        '$rootScope',
         '$scope',
         'globalConstants',
         'itPopup',
         'InvoiceService',
+        'CommonService',
+        'XmlService',
         '$translate',
-        '$window',
-        function ($scope, globalConstants, itPopup, InvoiceService, $translate, $window) {
+        function ($rootScope, $scope, globalConstants, itPopup, InvoiceService, CommonService, XmlService, $translate) {
 
             $scope.lastItesoftId = null;
-            $scope.invoiceXmlDOM = null;
             $scope.masterDetails = {};
             $scope.invoices = [];
 
@@ -61,7 +62,7 @@ angular.module('MLEditor')
 
 
             $scope.masterDetails.navAlert = {
-                text: '{{\'CANNOT_EDIT_INVOCIE\' | translate}}',
+                text: '{{\'CANNOT_EDIT_INVOICE\' | translate}}',
                 title: '{{\'WARNING\' | translate}}'
             };
 
@@ -116,7 +117,6 @@ angular.module('MLEditor')
                 if ($scope.masterDetails.getCurrentItemWrapper() != null && typeof $scope.masterDetails.getCurrentItemWrapper() !== 'undefined') {
 
                     var originalItesoftId = _getOriginalItesoftId();
-
                     if (originalItesoftId != null) {
                         $scope.invoiceId = originalItesoftId;
                     }
@@ -169,41 +169,22 @@ angular.module('MLEditor')
                         $scope.invoices = response.data.invoice;
 
 
-                        //Resize event for prevent uigrid sizing problems
-                        $scope.$applyAsync(function () {
-                            var event = document.createEvent('Event');
-                            event.initEvent('resize', true /*bubbles*/, true /*cancelable*/);
-                            $window.dispatchEvent(event);
-                            console.log("resize event...");
-                        });
+                        CommonService.resizeEvent();
                     }
                 }, function (response) {
                     $scope.data = response.data || "Request failed";
                     $scope.status = response.status;
-                    var text = _buildErrorResponseAlertText(response);
-                    $scope.showAlertPopup("SEARCH_FAILED", text);
+                    var text = InvoiceService.buildErrorResponseAlertText(response);
+                    CommonService.showErrorAlertPopup("SEARCH_FAILED", text);
                 });
-            };
-
-            function _checkXml(xml) {
-                var oParser = new DOMParser();
-                var oDOM = null;
-                try {
-                    oDOM = oParser.parseFromString(xml, "text/xml");
-                    $scope.invoiceXmlDOM = oDOM;
-                } catch (e) {
-                    console.error("Xml is not valid : ", e.message);
-                    return false;
-                }
-                return true;
             };
 
 
             function _getItesoftIdFromDOM() {
                 var result = null;
 
-                if (typeof $scope.invoiceXmlDOM !== 'undefined' && $scope.invoiceXmlDOM != null) {
-                    var itesoftidFromDOM = $scope.invoiceXmlDOM.getElementsByTagName("ItesoftId");
+                if (typeof $rootScope.currentXmlDom !== 'undefined' && $rootScope.currentXmlDom != null) {
+                    var itesoftidFromDOM = $rootScope.currentXmlDom.getElementsByTagName("ItesoftId");
 
                     if (itesoftidFromDOM != null && typeof itesoftidFromDOM !== 'undefined' && itesoftidFromDOM.length > 0) {
 
@@ -222,16 +203,9 @@ angular.module('MLEditor')
                         console.error("Cannot find 'ItesoftId' element in invoice xml");
                     }
                 } else {
-                    console.error("$scope.invoiceXmlDOM is undefined or null. So cannot retrieve 'ItesoftId' element in xml.");
+                    console.error("$rootScope.currentXmlDom is undefined or null. So cannot retrieve 'ItesoftId' element in xml.");
                 }
                 return result;
-            };
-
-            $scope.showAlertPopup = function (titleKey, message) {
-                var alertPopup = itPopup.alert({
-                    title: $translate.instant(titleKey),
-                    text: message
-                });
             };
 
             $scope.showConfirmPopupDeleteItems = function (title, message) {
@@ -266,9 +240,9 @@ angular.module('MLEditor')
 
             $scope.save = function () {
 
-                var xmlChecked = _checkXml($scope.masterDetails.getCurrentItemWrapper().currentItem.xml);
+                var xmlChecked = XmlService.validateXml($scope.masterDetails.getCurrentItemWrapper().currentItem.xml);
                 if (!xmlChecked) {
-                    $scope.showAlertPopup('ERROR', '{{\'XML_NOT_VALID\' | translate}}');
+                    CommonService.showErrorAlertPopup('ERROR', '{{\'XML_NOT_VALID\' | translate}}');
                     return;
                 }
 
@@ -282,8 +256,8 @@ angular.module('MLEditor')
                         angular.copy($scope.masterDetails.getCurrentItemWrapper().currentItem,
                             $scope.invoices[$scope.masterDetails.getCurrentItemWrapper().index]);
 
-                        var saveResult = _buildResultResponseAlertText(response);
-                        $scope.showAlertPopup("SAVE_RESULT", saveResult);
+                        var saveResult = InvoiceService.buildErrorResponseAlertText(response);
+                        CommonService.showSuccessAlertPopup("SAVE_RESULT", saveResult);
 
                         $scope.invoiceId = _getItesoftIdFromDOM();
 
@@ -302,63 +276,11 @@ angular.module('MLEditor')
                         $scope.data = response.data || "Request failed";
                         $scope.status = response.status;
 
-                        var text = _buildErrorResponseAlertText(response);
-                        $scope.showAlertPopup("SAVE_FAILED", text);
+                        var text = InvoiceService.buildErrorResponseAlertText(response);
+                        CommonService.showErrorAlertPopup("SAVE_FAILED", text);
                     });
             };
 
-            function _buildErrorResponseAlertText(response) {
-                var text = '';
-                var errorResponse = _getErrorResponse(response);
-                if (typeof errorResponse !== 'undefined' && errorResponse != '' && errorResponse != null) {
-                    $scope.errorStatusCode = {value: _getErrorResponseStatusCode(response)};
-                    $scope.errorStatus = {value: _getErrorResponseStatus(response)};
-                    $scope.errorMessageCode = {value: _getErrorResponseMessageCode(response)};
-                    $scope.errorMessage = {value: _getErrorResponseMessage(response)};
-
-                    text =
-                        $translate.instant('ERROR_CODE', $scope.errorStatusCode) + " </br>" +
-                        $translate.instant('ERROR_STATE', $scope.errorStatus) + " </br>" +
-                        $translate.instant('ERROR_MESSAGE_CODE', $scope.errorMessageCode) + " </br>" +
-                        $translate.instant('ERROR_MESSAGE', $scope.errorMessage) + " </br>";
-                } else {
-                    text = _getResponseData(response);
-                }
-                return text;
-            }
-
-
-            function _buildResultResponseAlertText(response) {
-                var text = _getResponseData(response);
-                return text;
-            }
-
-            function _getResponseData(response) {
-                return response.data;
-            };
-            function _getErrorResponse(response) {
-                return response.data.errorResponse;
-            };
-
-            function _getErrorResponseStatusCode(response) {
-                return _getErrorResponse(response).statusCode;
-            };
-
-            function _getErrorResponseStatusCode(response) {
-                return _getErrorResponse(response).statusCode;
-            };
-
-            function _getErrorResponseStatus(response) {
-                return _getErrorResponse(response).status;
-            };
-
-            function _getErrorResponseMessageCode(response) {
-                return _getErrorResponse(response).messageCode;
-            };
-
-            function _getErrorResponseMessage(response) {
-                return _getErrorResponse(response).message;
-            };
 
             function _loadJsonInItem(response) {
                 var lazyLoadedItem = {};
@@ -426,15 +348,17 @@ angular.module('MLEditor')
             $scope.sendDeleteRequest = function (itesoftId, dataList, itemIndex) {
                 InvoiceService.delete(itesoftId).then(function (response) {
 
-                    var deleteResult = _buildResultResponseAlertText(response);
-                    $scope.showAlertPopup("DELETE_RESULT", deleteResult);
+                    var deleteResult = InvoiceService.buildErrorResponseAlertText(response);
+                    CommonService.showSuccessAlertPopup("DELETE_RESULT", deleteResult);
+
                     $scope.$broadcast('unlockCurrentItem');
+
                     _removeItemFromGrid(dataList, itemIndex);
 
                 }, function (response) {
 
-                    var text = _buildErrorResponseAlertText(response);
-                    $scope.showAlertPopup("DELETE_FAILED", text);
+                    var text = InvoiceService.buildErrorResponseAlertText(response);
+                    CommonService.showErrorAlertPopup("DELETE_FAILED", text);
 
                 });
             };

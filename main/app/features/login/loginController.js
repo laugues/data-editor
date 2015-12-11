@@ -6,14 +6,26 @@ angular.module('MLEditor')
         '$scope',
         '$rootScope',
         '$location',
+        'CommonService',
         'LoginService',
-        function ($base64, $scope, $rootScope, $location, LoginService) {
+        function ($base64, $scope, $rootScope, $location, CommonService, LoginService) {
 
+            CommonService.initRootUrl();
+
+            $scope.account = {
+                url : CommonService.getRootUrl(),
+                login :'',
+                password : ''
+            };
 
             $scope.loginFailed = false;
 
+
+
             $scope.login = function () {
-                $rootScope.basicAuthenticationValue = _getAuthenticationExpression();
+                $rootScope.basicAuthenticationValue = _encodeCredentialsAsBasic();
+
+                CommonService.saveRootUrl($scope.account.url);
 
                 LoginService.connect().then(function (response) {
 
@@ -24,7 +36,6 @@ angular.module('MLEditor')
                     $location.path("/invoices/search");
 
                 }, function (response) {
-
                     $rootScope.isAuthenticated = false;
 
                     $scope.loginFailed = true;
@@ -33,10 +44,10 @@ angular.module('MLEditor')
 
             };
 
-            function _getAuthenticationExpression() {
 
+            function _encodeCredentialsAsBasic() {
                 $scope.basicEncrypted = $base64.encode($scope.account.user + ':' + $scope.account.password);
-                return 'Basic ' + $scope.basicEncrypted;
+                return $scope.basicEncrypted;
             }
         }]);
 

@@ -6,7 +6,6 @@ angular.module('MLEditor').config(['$routeProvider',
             when('/login', {
                 templateUrl: 'app/features/login/loginView.html',
                 controller: 'LoginController'
-
             }).
             when('/logout', {
                 templateUrl: 'app/features/login/loginView.html',

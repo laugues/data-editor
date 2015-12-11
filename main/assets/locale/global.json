@@ -21,8 +21,19 @@
       "RELOAD_FILE":"Recharger les fichiers"
     }
   },
-  "CONNECT_BUTTON": "Connexion",
-  "BAD_CREDENTIALS": "Identifiants invalides",
+  "LOGIN" : {
+    "USER" : {
+      "URL": "Url de connexion",
+      "PASSWORD": "Mot de passe",
+      "LOGIN": "Utilisateur"
+    },
+    "BUTTON" : {
+      "CONNECT": "Connexion"
+    },
+    "ERROR" : {
+      "BAD_CREDENTIALS": "Identifiants invalides"
+    }
+  },
   "ERROR": "Erreur",
   "UPDATE_RANGE": "Rang",
   "ITESOFT_ID": "Id ITESOFT",
@@ -33,8 +44,6 @@
   "SCAN_DATE": "Date de num.",
   "NO_ITEM_SELECTED": "Aucun élément sélectionné",
   "DISCONNECT": "Déconnexion",
-  "USER_PASSWORD": "Mot de passe",
-  "USER_LOGIN": "Utilisateur",
   "XML_NOT_VALID": "Xml non valide",
   "SEARCH": "Recherche",
   "SEARCH_PLACEHOLDER": "Recherche",
@@ -49,7 +58,7 @@
   "WARNING": "Attention",
   "UNDO": "Revenir à l'état d'origine",
   "UPDATE": "Sauvegarder",
-  "CANNOT_EDIT_INVOCIE": "Impossible d'éditer une autre document. Veuillez finir l'édition du document en cours d'édition ou revenir à l'état d'origine.",
+  "CANNOT_EDIT_INVOICE": "Impossible d'éditer une autre document. Veuillez finir l'édition du document en cours d'édition ou revenir à l'état d'origine.",
   "ADD_ITEM_BUTTON_TITLE": "Ajouter un élément",
   "ERROR_CODE": "Code : {{value}}",
   "ERROR_STATE": "Etat : {{value}}",
@@ -67,6 +76,9 @@
   "CANCEL_BUTTON": "Annuler",
   "DELETE_POPUP_TITLE": "Suppression de facture(s)",
   "DELETE_POPUP_TEXT": "Attention vous êtes sur le point de supprimer une facture. Veuillez confirmer.",
+  "ERROR" : {
+    "UNEXPECTED_SERVER_ERROR" : "Une erreur est survenue. Veuillez vous référer aux fichiers log du serveur."
+  },
   "CONFIGURATION": {
     "FILE": {
       "NAME": "Nom",

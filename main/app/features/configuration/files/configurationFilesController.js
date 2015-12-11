@@ -4,16 +4,17 @@
 
 angular.module('MLEditor')
     .controller('ConfigurationFilesController', [
+        '$rootScope',
         '$scope',
         'globalConstants',
         'itPopup',
+        'CommonService',
+        'XmlService',
         'ConfigurationFilesService',
         '$translate',
-        '$window',
-        function ($scope, globalConstants, itPopup, ConfigurationFileService, $translate,$window) {
+        function ($rootScope, $scope, globalConstants, itPopup, CommonService, XmlService, ConfigurationFileService, $translate) {
 
             $scope.lastItemIdentifier = null;
-            $scope.currentXmlDOM = null;
             $scope.masterDetails = {};
             $scope.files = [
                 {
@@ -49,7 +50,7 @@ angular.module('MLEditor')
 
 
             $scope.masterDetails.navAlert = {
-                text: '{{\'CANNOT_EDIT_INVOCIE\' | translate}}',
+                text: '{{\'CANNOT_EDIT_INVOICE\' | translate}}',
                 title: '{{\'WARNING\' | translate}}'
             };
 
@@ -129,7 +130,7 @@ angular.module('MLEditor')
                 return message;
             }
 
-            $scope.reloadFiles = function(){
+            $scope.reloadFiles = function () {
                 $scope.search();
             };
 
@@ -139,35 +140,22 @@ angular.module('MLEditor')
 
                         $scope.files = response.data.files.file;
 
-                        //Resize event for prevent uigrid sizing problems
-                        $scope.$applyAsync(function () {
-                            var event = document.createEvent('Event');
-                            event.initEvent('resize', true /*bubbles*/, true /*cancelable*/);
-                            $window.dispatchEvent(event);
-                        });
+                        CommonService.resizeEvent();
                     }
                 }, function (response) {
                     $scope.data = response.data || "Request failed";
                     $scope.status = response.status;
 
-                    var text = _buildErrorResponseAlertText(response);
-                    $scope.showAlertPopup("SAVE_FAILED", text);
-                });
-            };
-
-
-            $scope.showAlertPopup = function (titleKey, message) {
-                var alertPopup = itPopup.alert({
-                    title: $translate.instant(titleKey),
-                    text: message
+                    var text = ConfigurationFileService.buildErrorResponseAlertText(response);
+                    CommonService.showErrorAlertPopup("SAVE_FAILED", text);
                 });
             };
 
             $scope.save = function () {
 
-                var xmlChecked = _checkXml($scope.masterDetails.getCurrentItemWrapper().currentItem.xml);
+                var xmlChecked = XmlService.validateXml($scope.masterDetails.getCurrentItemWrapper().currentItem.xml);
                 if (!xmlChecked) {
-                    $scope.showAlertPopup('ERROR', '{{\'XML_NOT_VALID\' | translate}}');
+                    CommonService.showErrorAlertPopup('ERROR', '{{\'XML_NOT_VALID\' | translate}}');
                     return;
                 }
 
@@ -182,15 +170,15 @@ angular.module('MLEditor')
                             $scope.files[$scope.masterDetails.getCurrentItemWrapper().index]);
 
                         var saveResult = response.data;
-                        $scope.showAlertPopup("SAVE_RESULT", saveResult);
+                        CommonService.showSuccessAlertPopup("SAVE_RESULT", saveResult);
                         $scope.$broadcast('unlockCurrentItem');
 
                     }, function (response) {
                         $scope.data = response.data || "Request failed";
                         $scope.status = response.status;
 
-                        var text = _buildErrorResponseAlertText(response);
-                        $scope.showAlertPopup("SAVE_FAILED", text);
+                        var text = ConfigurationFileService.buildErrorResponseAlertText(response);
+                        CommonService.showErrorAlertPopup("SAVE_FAILED", text);
                     });
             };
 
@@ -204,59 +192,6 @@ angular.module('MLEditor')
 
             $scope.files = $scope.search();
 
-            function _buildErrorResponseAlertText(response) {
-                var text = '';
-                var errorResponse = _getErrorResponse(response);
-                if (typeof errorResponse !== 'undefined' && errorResponse != '' && errorResponse != null) {
-                    $scope.errorStatusCode = {value: _getErrorResponseStatusCode(response)};
-                    $scope.errorStatus = {value: _getErrorResponseStatus(response)};
-                    $scope.errorMessageCode = {value: _getErrorResponseMessageCode(response)};
-                    $scope.errorMessage = {value: _getErrorResponseMessage(response)};
-
-                    text =
-                        $translate.instant('ERROR_CODE', $scope.errorStatusCode) + " </br>" +
-                        $translate.instant('ERROR_STATE', $scope.errorStatus) + " </br>" +
-                        $translate.instant('ERROR_MESSAGE_CODE', $scope.errorMessageCode) + " </br>" +
-                        $translate.instant('ERROR_MESSAGE', $scope.errorMessage) + " </br>";
-                } else {
-                    text = _getResponseData(response);
-                }
-                return text;
-            }
-
-
-            function _buildResultResponseAlertText(response) {
-                var text = _getResponseData(response);
-                return text;
-            }
-
-            function _getResponseData(response) {
-                return response.data;
-            };
-            function _getErrorResponse(response) {
-                return response.data.errorResponse;
-            };
-
-            function _getErrorResponseStatusCode(response) {
-                return _getErrorResponse(response).statusCode;
-            };
-
-            function _getErrorResponseStatusCode(response) {
-                return _getErrorResponse(response).statusCode;
-            };
-
-            function _getErrorResponseStatus(response) {
-                return _getErrorResponse(response).status;
-            };
-
-            function _getErrorResponseMessageCode(response) {
-                return _getErrorResponse(response).messageCode;
-            };
-
-            function _getErrorResponseMessage(response) {
-                return _getErrorResponse(response).message;
-            };
-
             function _loadJsonInItem(response) {
                 var lazyLoadedItem = {};
 
@@ -267,21 +202,6 @@ angular.module('MLEditor')
                     angular.copy(lazyLoadedItem, $scope.files[$scope.masterDetails.getCurrentItemWrapper().index]);
                 });
 
-            };
-
-
-
-            function _checkXml(xml) {
-                var oParser = new DOMParser();
-                var oDOM = null;
-                try {
-                    oDOM = oParser.parseFromString(xml, "text/xml");
-                    $scope.currentXmlDOM = oDOM;
-                } catch (e) {
-                    console.error("Xml is not valid : ", e.message);
-                    return false;
-                }
-                return true;
             };
 
         }]);

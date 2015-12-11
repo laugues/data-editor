@@ -10,7 +10,8 @@ angular.module('MLEditor')
                 search: _search,
                 save: _save,
                 get: _get,
-                delete: _delete
+                delete: _delete,
+                buildErrorResponseAlertText : _buildErrorResponseAlertText
             }
 
             function _search(searchParamObj) {
@@ -127,6 +128,10 @@ angular.module('MLEditor')
                 return params;
 
 
+            }
+
+            function _buildErrorResponseAlertText(response) {
+                return RequestService.buildErrorResponseAlertText(response)
             }
 
             return InvoiceService;
