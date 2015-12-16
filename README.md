@@ -4,7 +4,7 @@
 
 git avec prise en charge du prompt sous windows.
 
-npm. testé et validé avec la version [0.12.2 de nodejs](https://nodejs.org/dist/v0.12.7/).
+npm. testé et validé avec la version [0.12.7 de nodejs](https://nodejs.org/dist/v0.12.7/).
 
 installer bower et gulp en globale :
 
