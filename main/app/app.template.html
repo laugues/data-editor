@@ -14,10 +14,10 @@
                         <ul class="nav navbar-nav navbar-left">
                             <li>
                                 <a ng-if="$root.pageTitle !== 'undefined' && $root.pageTitle != null" href="#/invoices/search">
-                                    <i class="fa fa-file-text fa-fw"></i>&nbsp;Doc Editor&nbsp;/&nbsp;{{$root.pageTitle | translate}}
+                                    <i class="fa fa-file-text fa-fw"></i>&nbsp;{{'APP.NAME' | translate}}&nbsp;/&nbsp;{{$root.pageTitle | translate}}
                                 </a>
                                 <a ng-if="$root.pageTitle === 'undefined' || $root.pageTitle == null" href="#/invoices/search">
-                                    <i class="fa fa-file-text fa-fw"></i>&nbsp;Doc Editor
+                                    <i class="fa fa-file-text fa-fw"></i>&nbsp;{{'APP.NAME' | translate}}
                                 </a>
                             </li>
                         </ul>

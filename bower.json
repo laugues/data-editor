@@ -5,7 +5,14 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "angular-common": "https://github.com/alizarion/angular-common/archive/v1.0-beta.4.zip",
-    "angular-mocks": "1.4.x"
+    "angular-common": "https://github.com/alizarion/angular-common/archive/v1.0-beta.8.zip",
+    "angular-mocks": "1.4.x",
+    "angular-translate-loader-partial": "2.8.0",
+    "angular-translate-loader-static-files": "2.8.0",
+    "angular-ui-codemirror": "^0.3.0",
+    "angular-base64": "2.0.2",
+    "angular-xml": "2.2.1",
+    "x2js": "1.1.7",
+    "vkBeautify": "vkbeautify#*"
   }
 }
