@@ -40,7 +40,7 @@ module.exports = {
         'main/assets/lib/codemirror/addon/display/fullscreen.css',
         'main/assets/lib/codemirror/addon/fold/foldgutter.css',
         'main/assets/css/css.css',
-        'main/assets/lib/itesoft/fonts/main.min.css'
+        'main/assets/lib/angular-common/dist/assets/fonts/itesoft-bundle.min.css'
     ],
     assetsDistFiles: [
         '!main/assets/lib/**/*.js',
@@ -91,9 +91,10 @@ module.exports = {
         'main/assets/lib/codemirror/addon/fold/xml-fold.js',
         'main/assets/lib/codemirror/addon/fold/markdown-fold.js',
         'main/assets/lib/codemirror/addon/fold/comment-fold.js',
-        'main/assets/lib/vkBeautify-wrapper/dist/vkbeautify.0.99.00.beta.js',
+
+        'main/assets/lib/vkBeautify/vkbeautify.js',
         'main/assets/lib/angular-base64/angular-base64.min.js',
-        'main/assets/lib/x2js/xml2json.js',
-        'main/assets/lib/angular-xml/angular-xml.js'
+        'main/assets/lib/x2js/xml2json.min.js',
+        'main/assets/lib/angular-xml/angular-xml.min.js'
     ]
 };
