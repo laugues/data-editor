@@ -1,4 +1,7 @@
 {
+  "APP" : {
+    "NAME" : "Data Editor"
+  },
   "GLOBAL": {
     "SIDE_MENU": {
       "DOCUMENTS": {
