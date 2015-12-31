@@ -96,7 +96,7 @@ This will make your testing easier and in some cases prevent unexpected behaviou
 * Name your directives with lowerCamelCase.
 * Name your directive files with lowerCamelCase[Directive.js].
 * Use `scope` instead of `$scope` in your link function. In the compile, post/pre link functions you have already defined arguments which will be passed when the function is invoked, you won't be able to change them using DI. This style is also used in AngularJS's source code.
-* Use `pm` prefixe for your directives to prevent name collisions with third-party libraries, and end with `Directive.js`  ex :  `pmDropdownDirective.js`
+* Use `de` prefixe for your directives to prevent name collisions with third-party libraries, and end with `Directive.js`  ex :  `deDropdownDirective.js`
 * Do not use `ng`, `ui` or `it` prefixes since they are reserved for AngularJS and AngularJS UI and itesoft-angular-common.
 * DOM manipulations must be done only through directives.
 * Create an isolated scope when you develop reusable components.
